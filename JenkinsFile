@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        JAVA_HOME = tool name: 'jdk', type: 'jdk'
         GRADLE_HOME = tool name: 'Gradle', type: 'gradle'
     }
     stages {
@@ -15,14 +14,14 @@ pipeline {
                 sh "${GRADLE_HOME}/bin/gradle clean build"
             }
         }
-        stage('Test') {
+        stage('Run Snapshot Jar') {
             steps {
-                sh "${GRADLE_HOME}/bin/gradle test"
+                sh "java -jar build/libs/snapshot.jar"
             }
         }
-        stage('Deploy') {
+        stage('Run Plain Snapshot Jar') {
             steps {
-                sh "java -jar build/libs/keycloak-demo-0.0.1-SNAPSHOT.jar"
+                sh "java -jar build/libs/plainsnapshot.jar"
             }
         }
     }
