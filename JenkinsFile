@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    tools {
+        // Use Gradle 8.2.1 for this pipeline
+        gradle '8.2.1'
+    }
+
+    stages {
+        stage('Compile and Clean') {
+            steps {
+                // Run Gradle to clean and compile
+                sh "./gradlew clean Compile and Clean"
+            }
+        }
+        stage('Build Jar') {
+            steps {
+                // Run Gradle to build the jar
+                sh "./gradlew build"
+            }
+        }
+
+
+
+
+        stage('Archiving') {
+            steps {
+                archiveArtifacts '**/build/libs/*.jar'
+            }
+        }
+    }
+}
