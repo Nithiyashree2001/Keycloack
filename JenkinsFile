@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        JAVA_HOME = tool name: 'JDK', type: 'JDK'
-        GRADLE_HOME = tool name: 'Gradle', type: 'Gradle'
+        JAVA_HOME = tool name: 'JDK', type: 'jdk'
+        GRADLE_HOME = tool name: 'Gradle', type: 'gradle'
     }
     stages {
         stage('Checkout') {
