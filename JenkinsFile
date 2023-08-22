@@ -1,29 +1,40 @@
 pipeline {
     agent any
-
-    tools {
-        // Use Gradle 8.2.1 for this pipeline
-        Gradle '8.2.1'
+    environment {
+        JAVA_HOME = tool name: 'JDK', type: 'JDK'
+        GRADLE_HOME = tool name: 'Gradle', type: 'Gradle'
     }
-
     stages {
-        stage('Compile and Clean') {
+        stage('Checkout') {
             steps {
-                // Run Gradle to clean and compile
-                sh "./gradlew clean Compile and Clean"
+                checkout scm
             }
         }
-        stage('Build Jar') {
+        stage('Build') {
             steps {
-                // Run Gradle to build the jar
-                sh "./gradlew build"
+                sh "${GRADLE_HOME}/bin/gradle clean build"
             }
         }
-
-        stage('Archiving') {
+        stage('Test') {
             steps {
-                archiveArtifacts '**/build/libs/*.jar'
+                sh "${GRADLE_HOME}/bin/gradle test"
             }
+        }
+        stage('Deploy') {
+            steps {
+                sh "java -jar build/libs/keycloak-demo-0.0.1-SNAPSHOT.jar"
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', allowEmptyArchive: true
+        }
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build or deployment failed!'
         }
     }
 }
