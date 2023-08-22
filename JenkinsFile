@@ -10,7 +10,7 @@ pipeline {
         stage('Compile and Clean') {
             steps {
                 // Run Gradle to clean and compile
-                sh "./gradlew clean compileJava"
+                sh "./gradlew clean Compile and Clean"
             }
         }
         stage('Build Jar') {
