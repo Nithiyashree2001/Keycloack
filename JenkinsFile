@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         // Use Gradle 8.2.1 for this pipeline
-        Gradle '8.2.1'
+        gradle '8.2.1'
     }
 
     stages {
