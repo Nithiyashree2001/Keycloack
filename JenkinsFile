@@ -20,9 +20,6 @@ pipeline {
             }
         }
 
-
-
-
         stage('Archiving') {
             steps {
                 archiveArtifacts '**/build/libs/*.jar'
