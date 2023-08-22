@@ -1,39 +1,32 @@
 pipeline {
     agent any
-    environment {
-        GRADLE_HOME = tool name: 'Gradle', type: 'gradle'
+
+    tools {
+        // Use Gradle 8.2.1 for this pipeline
+        gradle 'Gradle'
     }
+
     stages {
-        stage('Checkout') {
+        stage('Compile and Clean') {
             steps {
-                checkout scm
+                // Run Gradle to clean and compile
+                sh "./gradlew clean compileJava"
             }
         }
-        stage('Build') {
+        stage('Build Jar') {
             steps {
-                sh "${GRADLE_HOME}/bin/gradle clean build"
+                // Run Gradle to build the jar
+                sh "./gradlew build"
             }
         }
-        stage('Run Snapshot Jar') {
+
+
+
+
+        stage('Archiving') {
             steps {
-                sh "java -jar build/libs/snapshot.jar"
+                archiveArtifacts '**/build/libs/*.jar'
             }
-        }
-        stage('Run Plain Snapshot Jar') {
-            steps {
-                sh "java -jar build/libs/plainsnapshot.jar"
-            }
-        }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', allowEmptyArchive: true
-        }
-        success {
-            echo 'Build and deployment successful!'
-        }
-        failure {
-            echo 'Build or deployment failed!'
         }
     }
 }
