@@ -20,8 +20,12 @@ pipeline {
             }
         }
 
+       stage('Start server'){
+          steps{
+              sh "./gradlew bootRun"
+            }
 
-
+       }  
 
         stage('Archiving') {
             steps {
